@@ -1,44 +1,41 @@
 import requests
 import json
-import secrets
+import mySecrets
 
 data = []
 #api_key = "insert your api key"
-api_key = secrets.openWeatherApiKeyAdi
+api_key = mySecrets.openWeatherApiKeyAdi
 
 # ask the user which city they want the weather for
-
+print("Enter location in this format [CityName, CountryName]")
+userCityOfChoice = str(input())
 # call openweather geocoding api to get lat / long of that city
 
+locationURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + userCityOfChoice + "&appid=a1da61b6cb48fcc78c40eae7c0776c4b"
+locationURLResponse = requests.get(locationURL)
+locationURLResponseJSON = json.loads(locationURLResponse.content)
 
-# ask the lat/long that the user wants the weather of ...
-print("Please enter your latitude and longitude below there is no need to add N, W, S, or E\nFirst enter the longitude then the latitude")
-long = str(input())
-print("And your latitude.")
-lat = str(input())
+lat = locationURLResponseJSON[0]['lat']
+long = locationURLResponseJSON[0]['lon']
 
-# call weather api with the lat/long
-url = ('https://api.open-meteo.com/v1/forecast?latitude=' + lat +
-       '&&longitude=' + long +
-       '&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,'
-       'uv_index_max,rain_sum&timezone=America%2FNew_York&forecast_days=3')
+ #call weather api with the lat/long
+weatherURL = "https://api.open-meteo.com/v1/forecast?latitude=" + str(lat) + "&&longitude=" + str(long) + "&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,rain_sum&timezone=America%2FNew_York&forecast_days=3"
 
+plsGiveAnswer = requests.get(weatherURL)
+TemperatureURLresponseJSON = json.loads(plsGiveAnswer.content)
 
-r = requests.get(url)
-answer=json.loads(r.content)
-
-dates = answer['daily']['time']
+dates = TemperatureURLresponseJSON['daily']['time']
 
 day1 = dates[0]
 day2 = dates[1]
 day3 = dates[2]
 
-tempMin = answer['daily']['temperature_2m_min']
+tempMin = TemperatureURLresponseJSON['daily']['temperature_2m_min']
 tempMinDay1 = tempMin[0]
 tempMinDay2 = tempMin[1]
 tempMinDay3 = tempMin[2]
 
-tempMax = answer['daily']['temperature_2m_max']
+tempMax = TemperatureURLresponseJSON['daily']['temperature_2m_max']
 tempMaxday1 = tempMax[0]
 tempMaxday2 = tempMax[1]
 tempMaxday3 = tempMax[2]
