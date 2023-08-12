@@ -6,23 +6,18 @@ data = []
 #api_key = "insert your api key"
 api_key = secrets.openWeatherApiKeyAdi
 
-print("Please enter a city Either Waterloo or Mississauga. PLease ensure that you copy it from here.")
-city = str(input())
+# ask the user which city they want the weather for
+
+# call openweather geocoding api to get lat / long of that city
 
 
-cityLocationURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + api_key
-cityLocation = requests.get(cityLocationURL)
+# ask the lat/long that the user wants the weather of ...
+print("Please enter your latitude and longitude below there is no need to add N, W, S, or E\nFirst enter the longitude then the latitude")
+long = str(input())
+print("And your latitude.")
+lat = str(input())
 
-if city == 'Waterloo':
-    long = '-80.5164'
-    lat = '43.4668'
-elif city == 'Mississauga':
-    long = '79.6441'
-    lat = '43.5890'
-else:
-    print('Please enter valid City')
-    exit()
-
+# call weather api with the lat/long
 url = ('https://api.open-meteo.com/v1/forecast?latitude=' + lat +
        '&&longitude=' + long +
        '&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,'
