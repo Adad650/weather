@@ -1,12 +1,12 @@
 import re
 import requests
+import mySecrets
 
 # First, ask the user to provide the name of a city
 # Since I am going to scrape on environment canada, there is no point in accepting a city that is not in Canada. 
 # Hence the ",CA" additional input in the location URL string itself.
 userCity = str(input("Enter Your Canadian City Of Choice:  "))
-
-locationURL = f"https://api.openweathermap.org/geo/1.0/direct?q={userCity},CA&limit=1&appid=a1da61b6cb48fcc78c40eae7c0776c4b"
+locationURL = f"https://api.openweathermap.org/geo/1.0/direct?q={userCity},CA&limit=1&appid={mySecrets.apiKey}"
 
 
 try:
