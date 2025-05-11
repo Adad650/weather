@@ -20,3 +20,5 @@ Method 2: weatherWebScraping.py
 * install the following modules using "pip install"
 ** requests
 
+I made it use flask to get the weather and to host it.
+
