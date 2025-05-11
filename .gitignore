@@ -1,3 +1,4 @@
 mySecrets.py
 __pycache__/
 aenv/
+.DS_Store

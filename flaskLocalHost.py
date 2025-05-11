@@ -1,4 +1,5 @@
 from flask import Flask, request
+from datetime import datetime
 import re
 import requests
 import mySecrets
@@ -8,7 +9,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return '''
-        <h2>Canadian City Weather Lookup</h2>
+        <h1>Canadian City Weather Lookup</h2>
         <form action="/weather">
             Enter Canadian city: <input type="text" name="city">
             <input type="submit" value="Get Weather">
@@ -30,7 +31,11 @@ def weather():
         provinceOfCity = city[0]['state']
         fullNameOfCity = city[0]['name']
     except:
-        return f"{userCity} isn't a valid Canadian city."
+        return f"""
+            {userCity} isn't a valid Canadian city.
+            To continue, please try again by going here.
+            <a href="/">Home</a>
+            """
 
     url = f"https://weather.gc.ca/en/location/index.html?coords={lat},{lon}"
     try:
@@ -50,6 +55,10 @@ def weather():
         chanceOfRainToday = "0"
         chanceOfRainTommorrow = "0"
 
+    mississaugaLink = ""
+    if fullNameOfCity.lower() != "mississauga":
+        mississaugaLink = '<p><a href="/weather?city=Mississauga">Mississauga Weather</a></p>'
+
     return f"""
         <h2>Weather in {fullNameOfCity}, {provinceOfCity}, {countryOfCity}</h2>
         <p>Current: {weather[0]}°C</p>
@@ -57,8 +66,21 @@ def weather():
         <p>Tomorrow Low: {weatherLow[1]}°C | High: {weatherHigh[1]}°C</p>
         <p>Rain Today: {chanceOfRainToday}%</p>
         <p>Rain Tomorrow: {chanceOfRainTommorrow}%</p>
+        <p>
+        {mississaugaLink}
         <a href="/">Check another city</a>
     """
+@app.route('/time')
+def timeRightNow():
+    nowTime = datetime.now()
+    currentTime = nowTime.strftime("%H:%M")
+    returnValueString = f"""
+        <h2>Current Time</h2>
+        <p>The current time is: {currentTime}</p>
+    """
+    return returnValueString
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)
