@@ -20,4 +20,3 @@ Method 2: weatherWebScraping.py
 * install the following modules using "pip install"
 ** requests
 
-x
