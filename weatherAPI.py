@@ -1,7 +1,7 @@
 import requests
 import json
 
-api_key = ("a1da61b6cb48fcc78c40eae7c0776c4b")
+api_key = ("inset your API key")
 
 print("Enter location in this format [CityName,CountryCode]")
 userCityOfChoice = input().strip()
